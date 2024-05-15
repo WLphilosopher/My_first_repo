@@ -1,20 +1,27 @@
 #!/bin/bash
 
-# 安裝 Apache 伺服器
+# 创建用户
+sudo useradd -m -p $(openssl passwd -1 password) susan
+
+# 安装 Apache 服务器
 sudo apt update
 sudo apt install -y apache2
 
-# 啟動 Apache 伺服器
+# 将 Apache 服务器设置为以 susan 用户身份运行
+sudo sed -i 's/APACHE_RUN_USER=www-data/APACHE_RUN_USER=susan/g' /etc/apache2/envvars
+sudo sed -i 's/APACHE_RUN_GROUP=www-data/APACHE_RUN_GROUP=susan/g' /etc/apache2/envvars
+
+# 启动 Apache 服务器
 sudo systemctl start apache2
 
-# 創建文件上傳目錄
-sudo mkdir /var/www/html/uploads
+# 创建文件上传目录
+sudo mkdir /home/susan/uploads
 
-# 更改目錄權限
-sudo chown -R www-data:www-data /var/www/html/uploads
-sudo chmod -R 755 /var/www/html/uploads
+# 更改目录权限
+sudo chown -R susan:susan /home/susan/uploads
+sudo chmod -R 755 /home/susan/uploads
 
-# 創建 upload.html 文件
+# 创建 upload.html 文件
 cat << 'EOF' | sudo tee /var/www/html/upload.html > /dev/null
 <!DOCTYPE html>
 <html lang="en">
@@ -33,10 +40,10 @@ cat << 'EOF' | sudo tee /var/www/html/upload.html > /dev/null
 </html>
 EOF
 
-# 創建 upload.php 文件
+# 创建 upload.php 文件
 cat << 'EOF' | sudo tee /var/www/html/upload.php > /dev/null
 <?php
-$target_dir = "uploads/";
+$target_dir = "/home/susan/uploads/";
 $target_file = $target_dir . basename($_FILES["fileToUpload"]["name"]);
 $uploadOk = 1;
 
@@ -63,5 +70,9 @@ if ($uploadOk == 0) {
 ?>
 EOF
 
-# 完成安裝
+# 创建 user.txt 和 root.txt 文件
+echo "This is the content of user.txt" | sudo tee /home/susan/user.txt > /dev/null
+echo "This is the content of root.txt" | sudo tee /root/root.txt > /dev/null
+
+# 完成安装
 echo "Setup completed successfully!"
