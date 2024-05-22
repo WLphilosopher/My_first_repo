@@ -46,7 +46,7 @@ https://github.com/xi-virus
 * 於README.md及/doc/design.vpp說明。
 * 主要規格為：
   * 可組建靶機容器映像檔
-  * 靶機具備外部滲透弱點：80port隱藏目錄、ssh弱密碼
+  * 靶機具備外部滲透弱點：80port檔案上傳、ssh弱密碼
   * 靶機具備內部提權弱點：linux 讀寫漏洞
 
 ## 3.3. 模組發展
@@ -65,8 +65,8 @@ https://github.com/xi-virus
 * 省略未做單元測試，僅做黑箱模組測試。
 * 測試個案為：
   1. 個案：**BoxAdmin**可遠端連線**BoxContainer**並具備管理權。
-  2. 個案：**BoxUser**可遠端連線**BoxContainer**並以弱密碼(password)登入後，讀取user.flag。
-  3. 個案：**BoxUser**可遠端連線**BoxContainer**登入後，操作cp提權讀取root.flag。
+  2. 個案：**BoxUser**可遠端連線**BoxContainer**並以惡意檔案上傳獲取shell後，讀取user.flag。
+  3. 個案：**BoxUser**可遠端連線**BoxContainer**操作提權以弱密碼(password)登入後，讀取root.flag。
 
 ### 3.3.3. 模組發佈
 
