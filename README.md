@@ -1,96 +1,73 @@
-App_SimpleBox
+This project was conducted under the guidance of [Carlton0521](https://github.com/carlton0521).
+
+https://github.com/xi-virus
+# Paper Pass Box
 ====
+> 
 
-# 壹、REPO內容說明
+* Static Info:
+  ![Bash使用](https://img.shields.io/badge/Bash_Script-2A2Ba2)
+  ![Docker使用](https://img.shields.io/badge/Docker-2496ED?logo=docker&logoColor=white)
+  ![Python使用](https://img.shields.io/badge/Python-14354C.svg?logo=python&logoColor=white)
+* Development:
+  ![版權宣告](https://img.shields.io/github/license/TwMoonBear-Arsenal/Box_PaperPass)
+  [![可維護度](https://api.codeclimate.com/v1/badges/da0c547d8c6236d10e0e/maintainability)](https://codeclimate.com/github/TwMoonBear-Arsenal/Box_PaperPass/maintainability)
+  ![GitHub repo size](https://img.shields.io/github/repo-size/TwMoonBear-Arsenal/Box_PaperPass)
+  ![GitHub Tag](https://img.shields.io/github/v/tag/TwMoonBear-Arsenal/Box_PaperPass)
+  ![釋出版本](https://img.shields.io/github/v/release/TwMoonBear-Arsenal/Box_PaperPass)
+  ![釋出日期](https://img.shields.io/github/release-date/TwMoonBear-Arsenal/Box_PaperPass)
 
-## 一、運用目標
+# 1. 功能簡介
 
-* 提供一個腳本，執行後可建立簡單靶機環境。
+* 提供一組Docker相關腳本，運行腳本後可建立簡單紅隊靶機，作為示範教學使用。
 
-## 二、運用架構
+# 2. 項目介紹
 
-* 本Repo提供一個bash script。
+## 2.1. Release Asset
 
-## 三、運作流程
+- **data資料夾**：配合dockerfile設定所需檔案
+- **dockerfile檔案**：容器創建文件
+- **LICENSE檔案**：版權宣告
+- **README.md檔案**：說明文件
 
-* 將bash script複製到Ubuntu的VM或DockerContainer中。
-* 以Root權限執行後，可：
-  * 自動設定弱密碼之ssh服務。
-  * 自動設定一般使用者CP提權弱點
-* 使用者可以此設定後之VM或DockerContainer，作為練習破密及提權靶機
+## 2.2. 外部依賴
 
-# 貳、REPO內容結構
+- **Kali Image**：執行dockerfile組建所需，可為遠端dockerhub或本地提供
 
-* Github Repo<br/>
-  📁.github資料夾<br/>
-  └ 📁actions<br/>
-  　└ ◻️UnitTest.yml<br/>
-  　└ ◻️ModuleTest.yml<br/>
-  　└ ◻️TestThenPublishZip.yml<br/>
-  　└ ◻️TestThenPublishContainer.yml<br/>
-  📁.vs資料夾<br/>
-  📁doc資料夾<br/>
-  ◻️.gitignore檔案<br/>
-  ◻️docker-compose.yml檔案<br/>
-  ◻️Dockerfile檔案<br/>
-  ◻️Mod_Gundam1.sln檔案<br/>
-  ◻️README.md<br/>
+# 3. 作業運用
 
-# 參、REPO使用方法
+## 3.1 Repo構管
 
-## 一、需求分析 & 二、系統設計
+* 此Repo為public，設定保護main branch。
+* 主要更新於develop branch執行後，pull request回main branch。
 
-None
+## 3.2. 模組設計
 
-## 三、模組設計
+* 於README.md及/doc/design.vpp說明。
+* 主要規格為：
+  * 可組建靶機容器映像檔
+  * 靶機具備外部滲透弱點：80port隱藏目錄、ssh弱密碼
+  * 靶機具備內部提權弱點：linux 讀寫漏洞
 
-設計(滾修)後直接於Readme註記。
+## 3.3. 模組發展
 
-## 四、模發測佈
+### 3.3.1. 功能開發
 
-### (一)模組發展
+* 主要編寫bash腳本用以初始化靶機，可下載Repo後使用VScode編寫。
 
-主要是dockerfile及資料庫初始化腳本，完成後直接存檔。
+### 3.3.2. 模組測試
 
-### (二)模組測試
+* 使用Python的Pipenv虛擬環境+Pytest模組。
+* 測試時：
+  1. 安裝pipenv ```pip install pipenv```
+  2. 回復pipenv ```pipenv install```
+  3. 執行測試 ```pipenv run pytest```
+* 省略未做單元測試，僅做黑箱模組測試。
+* 測試個案為：
+  1. 個案：**BoxAdmin**可遠端連線**BoxContainer**並具備管理權。
+  2. 個案：**BoxUser**可遠端連線**BoxContainer**並以弱密碼(password)登入後，讀取user.flag。
+  3. 個案：**BoxUser**可遠端連線**BoxContainer**登入後，操作cp提權讀取root.flag。
 
-利用github action做自動化測試。
+### 3.3.3. 模組發佈
 
-### (三)模組發佈
-
-測試通過後，手動於release介面發佈。
-
-## 五、系測版控
-
-### (一)獨立使用
-
-* [方法]執行image
-  * 利用docker直接建置，將新增image至本地registry
-    ```bash
-    # -t: tag
-    # . : 單點表示目前目錄
-    # --no-cache: 避免在Build時被cache，造成沒有讀到最新的Dockerfile
-    docker build -t neo4j . --no-cache
-    ```
-  * 檢視本地images
-    ```bash
-    docker images
-    ```  
-  * 使用本地image起容器
-    ```
-    docker run --publish=7474:7474 --publish=7687:7687 --volume=$HOME/neo4j/data:/data neo4j
-    ```
-* 瀏覽器開啟 
-* [方法]執行dockercompose
-  * 直接執行dockercompose
-    ```powershell
-    docker-compose up
-    ```
-* 登入瀏覽器確認運作正常
-* http://localhost:7474/browser/
-
-* 使用UI關閉container並刪除image
-
-### (二)併入SOA使用
-
-* 將dockercompose內容複製至系統dockercompose使用。
+* 檢核後手動發佈
