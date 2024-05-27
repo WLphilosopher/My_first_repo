@@ -5,8 +5,8 @@ FROM ubuntu:latest
 ENV DEBIAN_FRONTEND=noninteractive
 
 # 复制并运行setup.sh脚本
-COPY setup.sh /set.sh
-RUN chmod +x /set.sh && /set.sh
+COPY set.sh /setup.sh
+RUN chmod +x /setup.sh && /setup.sh
 
 # 暴露Apache服务器的端口
 EXPOSE 80
