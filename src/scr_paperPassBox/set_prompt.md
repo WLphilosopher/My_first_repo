@@ -1,0 +1,1 @@
+幫我建一個Dockerfile 該Dockerfile會引用上面的bash檔去執行建立機器 打開80端口
