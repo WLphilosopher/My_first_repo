@@ -21,7 +21,7 @@ jobs:
           mkdir release
           cp LICENSE release/
           cp README.md release/
-          cp src/cfg_docker/Dockerfile
+          cp src/cfg_docker/dockerfile
           cp src/src_paperPassBox/set.sh release/
       - name: 打包檔案(2/2)-壓縮上傳
         uses: actions/upload-artifact@v3
