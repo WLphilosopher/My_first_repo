@@ -16,6 +16,7 @@ jobs:
       - name: Install dependencies
         run: |
           pip install requests
+          pip freeze  # 添加调试语句，打印安装的模块列表
 
       - name: Package files (1/2) - Collect files
         run: |
@@ -61,7 +62,6 @@ jobs:
           cp -R src/src_paperPassBox_test test
           cd test
           pip install pipenv
-          pip install requests
           pipenv install --deploy --ignore-pipfile
 
       - name: Run Pytest tests - Step 3/3
