@@ -61,7 +61,8 @@ jobs:
 
       - name: Convert Pipfile to requirements.txt - Step 2.5/3
         run: |
-          pipenv lock -r > requirements.txt
+          echo "Generating requirements.txt from Pipfile"
+          pipenv lock --requirements > requirements.txt
 
       - name: Run Pytest tests - Step 3/3
         run: |
