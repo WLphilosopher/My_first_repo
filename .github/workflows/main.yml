@@ -58,7 +58,7 @@ jobs:
           cd test
           pip install pipenv
           ls -la  # 列出文件以确保 Pipfile 存在
-          pipenv install --deploy --ignore-pipfile
+          pipenv install --deploy --ignore-Pipfile
 
       - name: Run Pytest tests - Step 3/3
         run: |
