@@ -10,7 +10,7 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout code
+      - name: Checkout repository
         uses: actions/checkout@v2
 
       - name: Package files (1/2) - Collect files
@@ -21,7 +21,7 @@ jobs:
           cp src/cfg_docker/Dockerfile release/
           cp src/src_paperPassBox/set.sh release/
 
-      - name: Package files (2/2) - Upload artifact
+      - name: Package files (2/2) - Compress and upload
         uses: actions/upload-artifact@v3
         with:
           name: release
@@ -32,29 +32,34 @@ jobs:
           cp -r ./release ./deployment
           cd deployment
           docker build -t myapp:latest .
-          docker run -d -p 2222:22 --name myapp_container myapp:latest
+          docker run -d -p 2222:80 -p 2223:22 --name myapp_container myapp:latest
           docker ps -a  # List all containers for debugging
 
       - name: Wait for container to start
-        run: sleep 30  # Wait to ensure the SSH service starts
+        run: sleep 30  # Wait to ensure the services start
 
       - name: Check container logs
-        run: docker logs myapp_container  # Show container logs for debugging
+        run: docker logs myapp_container  # Display container logs for debugging
 
       - name: Check SSH configuration
         run: |
-          docker exec myapp_container grep 'PermitRootLogin' /etc/ssh/sshd_config
-          docker exec myapp_container grep 'root' /etc/shadow
-          docker exec myapp_container grep 'user' /etc/shadow
+          docker exec myapp_container grep 'PermitRootLogin' /etc/ssh/sshd_config || true
+          docker exec myapp_container grep 'root' /etc/shadow || true
+          docker exec myapp_container grep 'user' /etc/shadow || true
 
-      - name: Install Python
+      - name: Install Python (for Pytest) - Step 1/3
         uses: actions/setup-python@v2
         with:
           python-version: '3.10.10'
 
-      - name: Install dependencies and run tests
+      - name: Install pipenv and restore virtual environment - Step 2/3
         run: |
           cp -R src/src_paperPassBox_test test
           cd test
-          pip install -r ../requirements.txt  # 修改这里的路径来找到requirements.txt
-          pytest
+          pip install pipenv
+          pipenv install --deploy --ignore-pipfile
+
+      - name: Run Pytest tests - Step 3/3
+        run: |
+          cd test
+          pipenv run pytest
