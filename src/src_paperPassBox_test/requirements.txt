@@ -1,8 +1,0 @@
-pytest==6.2.4
-pipenv==2023.12.1
-certifi==2024.2.2
-setuptools==70.0.0
-virtualenv==20.26.2
-distlib==0.3.8
-filelock==3.14.0
-platformdirs==4.2.2
