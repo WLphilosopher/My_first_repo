@@ -52,15 +52,13 @@ jobs:
         with:
           python-version: '3.10.10'
 
-      - name: Install pipenv and restore virtual environment - Step 2/3
+      - name: Install dependencies using pip - Step 2/3
         run: |
           cp -R src/src_paperPassBox_test test
           cd test
-          pip install pipenv
-          ls -la  # 列出文件以确保 Pipfile 存在
-          pipenv install --deploy --ignore-Pipfile
+          pip install -r requirements.txt
 
       - name: Run Pytest tests - Step 3/3
         run: |
           cd test
-          pipenv run pytest
+          pytest
