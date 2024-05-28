@@ -2,7 +2,7 @@ import requests
 import pytest
 
 # 设置服务器URL
-BASE_URL = "http://localhost"
+BASE_URL = "http://127.0.0.1:2222"
 
 # 定义ping测试
 def test_ping():
