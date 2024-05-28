@@ -13,6 +13,11 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v2
 
+      - name: Install dependencies
+        run: |
+          pip install requests
+          pip freeze  # 添加调试语句，打印安装的模块列表
+
       - name: Package files (1/2) - Collect files
         run: |
           mkdir release
