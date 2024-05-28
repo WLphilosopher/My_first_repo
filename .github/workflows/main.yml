@@ -56,5 +56,5 @@ jobs:
         run: |
           cp -R src/src_paperPassBox_test test
           cd test
-          pip install -r requirements.txt
+          pip install -r ../requirements.txt  # 修改这里的路径来找到requirements.txt
           pytest
