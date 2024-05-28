@@ -13,6 +13,10 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v2
 
+      - name: Install dependencies
+        run: |
+          pip install requests
+
       - name: Package files (1/2) - Collect files
         run: |
           mkdir release
@@ -57,7 +61,6 @@ jobs:
           cp -R src/src_paperPassBox_test test
           cd test
           pip install pipenv
-          pip install requests
           pipenv install --deploy --ignore-pipfile
 
       - name: Run Pytest tests - Step 3/3
