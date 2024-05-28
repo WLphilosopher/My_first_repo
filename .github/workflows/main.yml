@@ -59,6 +59,10 @@ jobs:
           pip install pipenv
           pipenv install --deploy --ignore-pipfile
 
+      - name: Convert Pipfile to requirements.txt - Step 2.5/3
+        run: |
+          pipenv lock -r > requirements.txt
+
       - name: Run Pytest tests - Step 3/3
         run: |
           cd test
